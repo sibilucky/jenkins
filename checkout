@@ -1,0 +1,48 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                // Checkout code from Git repository
+                git url: 'https://github.com/sibilucky/jenkins.git', branch: 'main'
+            }
+        }
+        
+        stage('Build') {
+            steps {
+                // Compile or build the project (assume a Java Maven project here)
+                sh 'mvn clean package'
+            }
+        }
+        
+        stage('Test') {
+            steps {
+                // Run unit tests
+                sh 'mvn test'
+            }
+        }
+        
+        stage('Deploy') {
+            steps {
+                // Deployment step
+                echo 'Deploying application...'
+            }
+        }
+    }
+    
+    post {
+        always {
+            // Actions to take after the pipeline runs (success/failure)
+            echo 'Pipeline completed.'
+        }
+        success {
+            // Actions to take when the pipeline succeeds
+            echo 'Pipeline succeeded!'
+        }
+        failure {
+            // Actions to take when the pipeline fails
+            echo 'Pipeline failed!'
+        }
+    }
+}
